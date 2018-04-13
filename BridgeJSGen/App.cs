@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Bridge.Html5;
 using Bridge.React;
+using BridgeReactTutorial.API;
 using BridgeReactTutorial.Components;
 
 namespace BridgeReactTutorial
@@ -15,7 +16,10 @@ namespace BridgeReactTutorial
               " ",
               container.ClassName.Split().Where(c => c != "loading")
             );
-            React.Render(new AppContainer(), container);
+            React.Render(
+              new AppContainer(new AppContainer.Props { MessageApi = new MessageApi() }),
+              container
+            );
         }
     }
 }

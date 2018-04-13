@@ -11,7 +11,8 @@ namespace DidDoneUI.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            return Redirect("~/brdist/demo.html");
         }
 
         public IActionResult Error()

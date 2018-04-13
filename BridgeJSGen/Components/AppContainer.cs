@@ -1,18 +1,19 @@
-﻿using Bridge.Html5;
-using Bridge.React;
+﻿using Bridge.React;
+using BridgeReactTutorial.API;
 using BridgeReactTutorial.ViewModels;
 
 namespace BridgeReactTutorial.Components
 {
-    public class AppContainer : Component<object, AppContainer.State>
+    public class AppContainer : Component<AppContainer.Props, AppContainer.State>
     {
-        public AppContainer() : base(null) { }
+        public AppContainer(AppContainer.Props props) : base(props) { }
 
         protected override State GetInitialState()
         {
             return new State
             {
-                Message = new MessageDetails { Title = "", Content = "" }
+                Message = new MessageDetails { Title = "", Content = "" },
+                IsSaveInProgress = false
             };
         }
 
@@ -23,13 +24,34 @@ namespace BridgeReactTutorial.Components
                 ClassName = "message",
                 Title = state.Message.Title,
                 Content = state.Message.Content,
-                OnChange = newMessage => SetState(new State { Message = newMessage })
+                OnChange = newMessage => SetState(new State
+                {
+                    Message = newMessage,
+                    IsSaveInProgress = state.IsSaveInProgress
+                }),
+                OnSave = async () =>
+                {
+                    SetState(new State { Message = state.Message, IsSaveInProgress = true });
+                    await props.MessageApi.SaveMessage(state.Message);
+                    SetState(new State
+                    {
+                        Message = new MessageDetails { Title = "", Content = "" },
+                        IsSaveInProgress = false
+                    });
+                },
+                Disabled = state.IsSaveInProgress
             });
+        }
+
+        public class Props
+        {
+            public IReadAndWriteMessages MessageApi;
         }
 
         public class State
         {
             public MessageDetails Message;
+            public bool IsSaveInProgress;
         }
     }
 }
