@@ -35,7 +35,7 @@ class CounterButton extends React.Component {
 }
 
 
-class Input extends React.Component {
+class Input extends React.Component<any,any> {
 
     state = { value: 0 }
 
