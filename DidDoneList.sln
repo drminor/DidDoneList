@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DidDoneList", "DidDoneUI\DidDoneUI.csproj", "{38A47226-1E61-41B9-A62C-9B717E11E4B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DidDoneUI", "DidDoneUI\DidDoneUI.csproj", "{38A47226-1E61-41B9-A62C-9B717E11E4B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgeJSGen", "BridgeJSGen\BridgeJSGen.csproj", "{864B11EB-5DC9-436A-9E08-F662D81FE94B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{38A47226-1E61-41B9-A62C-9B717E11E4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38A47226-1E61-41B9-A62C-9B717E11E4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38A47226-1E61-41B9-A62C-9B717E11E4B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{864B11EB-5DC9-436A-9E08-F662D81FE94B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864B11EB-5DC9-436A-9E08-F662D81FE94B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864B11EB-5DC9-436A-9E08-F662D81FE94B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864B11EB-5DC9-436A-9E08-F662D81FE94B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
