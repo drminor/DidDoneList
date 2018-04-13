@@ -49,7 +49,7 @@ table {
     border-spacing: 0;
 }
 
-div#main.loading {
+#main.loading {
     color: #f1f1f1;
 }
 
@@ -71,15 +71,15 @@ fieldset legend {
         padding: 0 8px;
 }
 
-fieldset.message span.label {
+fieldset.message .label {
         padding: 0 8px;
 }
 
-fieldset.message span.title, fieldset.message span.content {
+fieldset.message span.title, fieldset.message .content {
         position: relative;
 }
 
-fieldset.message span.validation-message {
+fieldset.message .validation-message {
         position: absolute;
         top: -6px;
         right: 2px;
@@ -93,4 +93,19 @@ fieldset.message span.validation-message {
 
 fieldset.message button {
         margin-left: 8px;
+}
+
+fieldset.history {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+fieldset.history.zero-messages {
+    opacity: 0.6;
+}
+
+
+fieldset.history span.title {
+    padding: 0 8px;
+    font-weight: bold;
 }
