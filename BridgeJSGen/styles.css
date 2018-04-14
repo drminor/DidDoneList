@@ -53,8 +53,6 @@ table {
     color: #f1f1f1;
 }
 
-
-
 body {
     font-family: 'Segoe UI';
     padding: 8px;
@@ -66,20 +64,20 @@ fieldset {
     border-radius: 4px;
 }
 
-fieldset legend {
+    fieldset legend {
         color: blue;
         padding: 0 8px;
-}
+    }
 
-fieldset.message .label {
+    fieldset.message .label {
         padding: 0 8px;
-}
+    }
 
-fieldset.message span.title, fieldset.message .content {
+    fieldset.message span.title, fieldset.message .content {
         position: relative;
-}
+    }
 
-fieldset.message .validation-message {
+    fieldset.message .validation-message {
         position: absolute;
         top: -6px;
         right: 2px;
@@ -89,23 +87,24 @@ fieldset.message .validation-message {
         border: 1px solid #EFE9CB;
         border-radius: 2px;
         color: #A8A390;
-}
+    }
 
-fieldset.message button {
+    fieldset.message button {
         margin-left: 8px;
-}
+    }
 
-fieldset.history {
-    opacity: 1;
-    transition: opacity .5s ease-in-out;
-}
+    fieldset.history {
+        opacity: 1;
+        transition-property: opacity;
+        transition-duration: 2.5s;
+        transition-timing-function: ease-in-out;
+    }
 
-fieldset.history.zero-messages {
-    opacity: 0.6;
-}
+        fieldset.history.zero-messages {
+            opacity: 0;
+        }
 
-
-fieldset.history span.title {
-    padding: 0 8px;
-    font-weight: bold;
-}
+        fieldset.history span.title {
+            padding: 0 8px;
+            font-weight: bold;
+        }

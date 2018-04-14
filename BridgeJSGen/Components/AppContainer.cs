@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bridge.React;
-using BridgeReactTutorial.API;
+using BridgeReactTutorial.Actions;
 using BridgeReactTutorial.ViewModels;
+using BridgeReactTutorial.Stores;
 
 namespace BridgeReactTutorial.Components
 {
@@ -10,60 +11,46 @@ namespace BridgeReactTutorial.Components
     {
         public AppContainer(AppContainer.Props props) : base(props) { }
 
-        protected override State GetInitialState()
+        protected override void ComponentDidMount()
         {
-            return new State
+            props.Store.Change += StoreChanged;
+        }
+        protected override void ComponentWillUnmount()
+        {
+            props.Store.Change -= StoreChanged;
+        }
+        private void StoreChanged()
+        {
+            SetState(new State
             {
-                Message = new MessageDetails { Title = "", Content = "" },
-                IsSaveInProgress = false,
-                MessageHistory = new Tuple<int, MessageDetails>[0]
-            };
+                Message = props.Store.Message,
+                MessageHistory = props.Store.MessageHistory
+            });
         }
 
         public override ReactElement Render()
         {
+            if (state == null)
+                return null;
+
             return DOM.Div(null,
               new MessageEditor(new MessageEditor.Props
               {
                   ClassName = "message",
-                  Title = state.Message.Title,
-                  Content = state.Message.Content,
-                  OnChange = newMessage => SetState(new State
+                  Message = state.Message,
+                  OnChange = newState => props.Dispatcher.Dispatch(
+              new MessageEditStateChanged { NewState = newState }
+            ),
+                  OnSave = () => props.Dispatcher.Dispatch(
+              new MessageSaveRequested
                   {
-                      Message = newMessage,
-                      IsSaveInProgress = state.IsSaveInProgress,
-                      MessageHistory = state.MessageHistory
-                  }),
-                  OnSave = async () =>
-                  {
-                // Set SaveInProgress to true while the save operation is requested
-                SetState(new State
+                      Message = new MessageDetails
                       {
-                          Message = state.Message,
-                          IsSaveInProgress = true,
-                          MessageHistory = state.MessageHistory
-                      });
-                      await props.MessageApi.SaveMessage(state.Message);
-
-                // After the save has completed, clear the message entry form and reset
-                // SaveInProgress to false
-                SetState(new State
-                      {
-                          Message = new MessageDetails { Title = "", Content = "" },
-                          IsSaveInProgress = false,
-                          MessageHistory = state.MessageHistory
-                      });
-
-                // Then re-load the message history state and re-render when that data arrives
-                var allMessages = await props.MessageApi.GetMessages();
-                      SetState(new State
-                      {
-                          Message = state.Message,
-                          IsSaveInProgress = state.IsSaveInProgress,
-                          MessageHistory = allMessages
-                      });
-                  },
-                  Disabled = state.IsSaveInProgress
+                          Title = state.Message.Title.Text,
+                          Content = state.Message.Content.Text
+                      }
+                  }
+            )
               }),
               new MessageHistory(new MessageHistory.Props
               {
@@ -75,13 +62,13 @@ namespace BridgeReactTutorial.Components
 
         public class Props
         {
-            public IReadAndWriteMessages MessageApi;
+            public AppDispatcher Dispatcher;
+            public MessageWriterStore Store;
         }
 
         public class State
         {
-            public MessageDetails Message;
-            public bool IsSaveInProgress;
+            public MessageEditState Message;
             public IEnumerable<Tuple<int, MessageDetails>> MessageHistory;
         }
     }

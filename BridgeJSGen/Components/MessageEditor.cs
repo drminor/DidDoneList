@@ -11,45 +11,41 @@ namespace BridgeReactTutorial.Components
         public override ReactElement Render()
         {
             var formIsInvalid =
-              string.IsNullOrWhiteSpace(props.Title) ||
-              string.IsNullOrWhiteSpace(props.Content);
+              !string.IsNullOrWhiteSpace(props.Message.Title.ValidationError) ||
+              !string.IsNullOrWhiteSpace(props.Message.Content.ValidationError);
 
             return DOM.FieldSet(new FieldSetAttributes { ClassName = props.ClassName },
-              DOM.Legend(null, string.IsNullOrWhiteSpace(props.Title) ? "Untitled" : props.Title),
+              DOM.Legend(null, props.Message.Caption),
               DOM.Span(new Attributes { ClassName = "label" }, "Title"),
               new ValidatedTextInput(new ValidatedTextInput.Props
               {
                   ClassName = "title",
-                  Disabled = props.Disabled,
-                  Content = props.Title,
-                  OnChange = newTitle => props.OnChange(new MessageDetails
+                  Disabled = props.Message.IsSaveInProgress,
+                  Content = props.Message.Title.Text,
+                  OnChange = newTitle => props.OnChange(new MessageEditState
                   {
-                      Title = newTitle,
-                      Content = props.Content
+                      Title = new TextEditState { Text = newTitle },
+                      Content = props.Message.Content
                   }),
-                  ValidationMessage = string.IsNullOrWhiteSpace(props.Title)
-                  ? "Must enter a title"
-                  : null
+                  ValidationMessage = props.Message.Title.ValidationError
               }),
               DOM.Span(new Attributes { ClassName = "label" }, "Content"),
               new ValidatedTextInput(new ValidatedTextInput.Props
               {
                   ClassName = "content",
-                  Disabled = props.Disabled,
-                  Content = props.Content,
-                  OnChange = newContent => props.OnChange(new MessageDetails
+                  Disabled = props.Message.IsSaveInProgress,
+                  Content = props.Message.Content.Text,
+                  OnChange = newContent => props.OnChange(new MessageEditState
                   {
-                      Title = props.Title,
-                      Content = newContent
+                      Title = props.Message.Title,
+                      Content = new TextEditState { Text = newContent },
                   }),
-                  ValidationMessage = string.IsNullOrWhiteSpace(props.Content)
-                  ? "Must enter message content"
-                  : null
+                  ValidationMessage = props.Message.Content.ValidationError
               }),
               DOM.Button(
                 new ButtonAttributes
                 {
-                    Disabled = props.Disabled || formIsInvalid,
+                    Disabled = formIsInvalid || props.Message.IsSaveInProgress,
                     OnClick = e => props.OnSave()
                 },
                 "Save"
@@ -60,11 +56,9 @@ namespace BridgeReactTutorial.Components
         public class Props
         {
             public string ClassName;
-            public string Title;
-            public string Content;
-            public Action<MessageDetails> OnChange;
+            public MessageEditState Message;
+            public Action<MessageEditState> OnChange;
             public Action OnSave;
-            public bool Disabled;
         }
     }
 }
